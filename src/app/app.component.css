@@ -1,0 +1,19 @@
+.footer {
+    position: fixed;
+    left: 0 ; right: 0; bottom: 0;
+    text-align:center;
+    background-color: #efefef;
+    height:50px;
+    padding:1rem;
+}
+.txtpos {
+    position:relative;
+    top:8px;
+    color:grey;
+}
+.fontStyle{
+    font-family: 'Times New Roman', Times, serif;
+}
+.active {
+    background-color: grey;
+}

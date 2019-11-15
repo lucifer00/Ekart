@@ -1,0 +1,134 @@
+<nav class="navbar navbar-default">
+  <div class="container-fluid ">
+      <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+          </button>
+
+          <a class="navbar-brand" [routerLink]="['/homeRegistered']">
+              <strong>Ekart</strong>
+          </a>
+      </div>
+      <div class="collapse navbar-collapse" id="myNavbar">
+          <button class="btn btn-primary navbar-btn navbar-right" (click)="logout()"
+              style="margin-left: 20;">Logout</button>
+          <button class="btn btn-primary navbar-btn navbar-right" (click)="addNew()"
+              style="margin-left: 20;">Add Address</button>
+      </div>
+  </div>
+</nav>
+<div class="row" *ngIf="showAddAddressIfEmpty" style="margin-left: 20px;">
+  <div class="col-lg-4 col-lg-offset-4 center">
+    <h2>No Addresses,add one</h2>
+  </div>
+</div>
+<div class="row" *ngIf="showAddresses">
+  <div class="col-lg-4 col-lg-offset-4 center">
+    <h2>Address Description</h2>
+    <table hover="true" class="table">
+        <tbody>
+          <tr mdbTableCol *ngFor="let address of addresses">
+            <th scope="row">{{address.address}}</th>
+            <td>{{address.city}}</td>
+            <td>{{address.state}}</td>
+            <td>{{address.pincode}}</td>
+            <td>{{address.phonenumber}}</td>
+            <td><button (click)=modify(address) class="btn btn-primary" type="button">Modify</button></td>
+            <td><button (click)=delete(address) class="btn btn-primary" type="button">Delete</button></td>
+          </tr>
+        </tbody>
+      </table>
+  </div>
+</div>
+<div class="row" *ngIf="showAddAddress" style="margin-left: 20px;">
+  <div class="col-lg-4 col-lg-offset-4 center">
+<form [formGroup]="addressForm">
+  <div class="form-group">
+    <label for="address">Address:</label>&nbsp;<span class="red">*</span>
+    <input type="address" class="form-control" name="address" formControlName="address">
+    <div *ngIf="(addressForm.controls['address'].errors && (addressForm.controls['address'].dirty || addressForm.controls['address'].touched))" class="red">
+        <div *ngIf="addressForm.controls.address.errors.required">Address is required</div>
+      </div>
+  </div>
+<div class="form-group">
+  <label for="city">City:</label>&nbsp;<span class="red">*</span>
+  <input type="text" class="form-control" name="city"  formControlName="city">
+  <div *ngIf="(addressForm.controls['city'].errors && (addressForm.controls['city'].dirty || addressForm.controls['city'].touched))" class="red">
+    <div *ngIf="addressForm.controls.city.errors.required">City is required</div>
+  </div>
+</div>
+<div class="form-group">
+    <label for="state">State:</label>&nbsp;<span class="red">*</span>
+    <input type="text" class="form-control" name="state"  formControlName="state">
+    <div *ngIf="(addressForm.controls['state'].errors && (addressForm.controls['state'].dirty || addressForm.controls['state'].touched))" class="red">
+      <div *ngIf="addressForm.controls.state.errors.required">State is required</div>
+      <div *ngIf="addressForm.get('state').errors.valid">State should be an indian state</div>
+    </div>
+  </div>
+  <div class="form-group">
+      <label for="pincode">Pincode:</label>&nbsp;<span class="red">*</span>
+      <input type="text" class="form-control" name="pincode"  formControlName="pincode">
+      <div *ngIf="(addressForm.controls['pincode'].errors && (addressForm.controls['pincode'].dirty || addressForm.controls['pincode'].touched))" class="red">
+        <div *ngIf="addressForm.controls.pincode.errors.required">Pincode is required</div>
+        <div *ngIf="addressForm.get('pincode').errors.pattern">Check pincode</div>
+      </div>
+  </div>
+  <div class="form-group">
+      <label for="pnonenumber">Phone#:</label>&nbsp;<span class="red">*</span>
+      <input type="text" class="form-control" name="phonenumber"  formControlName="phonenumber">
+      <div *ngIf="(addressForm.controls['phonenumber'].errors && (addressForm.controls['phonenumber'].dirty || addressForm.controls['phonenumber'].touched))" class="red">
+        <div *ngIf="addressForm.controls.phonenumber.errors.required">Phone number is required</div>
+        <div *ngIf="addressForm.get('phonenumber').errors.pattern">Check phonenumber</div>
+      </div>
+  </div>
+<button type="button" class="btn btn-primary" style="margin:auto;display:block;" [disabled]="!addressForm.valid" (click)="addAddress()">Add</button><br>
+</form>
+</div>
+</div>
+<div class="row" *ngIf="modifyAddress" style="margin-left: 20px;">
+    <div class="col-lg-4 col-lg-offset-4 center">
+  <form [formGroup]="addressForm">
+    <div class="form-group">
+      <label for="address">Address:</label>&nbsp;<span class="red">*</span>
+      <input type="address" class="form-control" name="address" formControlName="address" [(ngModel)]="address">
+      <div *ngIf="(addressForm.controls['address'].errors && (addressForm.controls['address'].dirty || addressForm.controls['address'].touched))" class="red">
+          <div *ngIf="addressForm.controls.address.errors.required">Address is required</div>
+        </div>
+    </div>
+  <div class="form-group">
+    <label for="city">City:</label>&nbsp;<span class="red">*</span>
+    <input type="text" class="form-control" name="city" [(ngModel)]="city" formControlName="city">
+    <div *ngIf="(addressForm.controls['city'].errors && (addressForm.controls['city'].dirty || addressForm.controls['city'].touched))" class="red">
+      <div *ngIf="addressForm.controls.city.errors.required">City is required</div>
+    </div>
+  </div>
+  <div class="form-group">
+      <label for="state">State:</label>&nbsp;<span class="red">*</span>
+      <input type="text" class="form-control" name="state" [(ngModel)]="state" formControlName="state">
+      <div *ngIf="(addressForm.controls['state'].errors && (addressForm.controls['state'].dirty || addressForm.controls['state'].touched))" class="red">
+        <div *ngIf="addressForm.controls.state.errors.required">State is required</div>
+        <div *ngIf="addressForm.get('state').errors.valid">State should be an indian state</div>
+      </div>
+    </div>
+    <div class="form-group">
+        <label for="pincode">Pincode:</label>&nbsp;<span class="red">*</span>
+        <input type="text" class="form-control" name="pincode" [(ngModel)]="pincode" formControlName="pincode">
+        <div *ngIf="(addressForm.controls['pincode'].errors && (addressForm.controls['pincode'].dirty || addressForm.controls['pincode'].touched))" class="red">
+          <div *ngIf="addressForm.controls.pincode.errors.required">Pincode is required</div>
+          <div *ngIf="addressForm.get('pincode').errors.pattern">Check pincode</div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="pnonenumber">Phone#:</label>&nbsp;<span class="red">*</span>
+        <input type="text" class="form-control" name="phonenumber" [(ngModel)]="phonenumber" formControlName="phonenumber">
+        <div *ngIf="(addressForm.controls['phonenumber'].errors && (addressForm.controls['phonenumber'].dirty || addressForm.controls['phonenumber'].touched))" class="red">
+          <div *ngIf="addressForm.controls.phonenumber.errors.required">Phone number is required</div>
+          <div *ngIf="addressForm.get('phonenumber').errors.pattern">Check phonenumber</div>
+        </div>
+    </div>
+  <button type="button" class="btn btn-primary" style="margin:auto;display:block;" [disabled]="!addressForm.valid" (click)="modifyAddressNew()">Modify</button><br>
+  </form>
+  </div>
+  </div>

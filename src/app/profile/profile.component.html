@@ -1,0 +1,62 @@
+<nav class="navbar navbar-default">
+    <div class="container-fluid ">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+  
+        <a class="navbar-brand" [routerLink]="['/homeRegistered']">
+          <strong>Ekart</strong>
+        </a>
+      </div>
+      <div class="collapse navbar-collapse" id="myNavbar">
+        <button class="btn btn-primary navbar-btn navbar-right" [routerLink]="['/kart']"  style="margin-left: 20;">Kart<span class="badge badge-secondary">{{informationService.kartCount}}</span></button>
+        <button class="btn btn-primary navbar-btn navbar-right" (click)="logout()" style="margin-left: 20;">Logout</button>
+        <button class="btn btn-primary navbar-btn navbar-right" [routerLink]="['/address']" style="margin-left: 20;">Adresses</button>
+      </div>
+    </div>
+</nav>
+
+<div class="row">
+    <div class="col-lg-4 col-lg-offset-4 center">
+      <h2>Profile Description</h2>
+      <table hover="true" class="table">
+          <thead>
+            <!--<tr>
+              <th *ngFor="let head of headElements" scope="col">{{head}} </th>
+            </tr>-->
+          </thead>
+          <tbody>
+            <tr mdbTableCol>
+              <th scope="row">{{profileUser.name}}</th>
+              <td><input type="text" [(ngModel)]="email" style="width: 250px;"></td>
+              <td><button class="btn btn-primary" (click)="updateEmail()" type="button">Modify Address</button></td>
+              <td><button class="btn btn-primary" (click)="updatePassword()" type="button">Update Password</button></td>
+            </tr>
+          </tbody>
+        </table>
+        <div *ngIf="errorMsg"  class = "red"><h1>{{errorMsg}}</h1><br></div><br>
+    </div>
+</div>
+<div class="row" *ngIf="passwordUpdateValid">
+    <div class="col-lg-4 col-lg-offset-4 center">
+<div class="panel-body">
+    <form [formGroup]="passwordUpdateForm">
+      <div class="form-group">
+        <label for="password">Password</label>&nbsp;<span class="red">*</span>
+        <input type="password" class="form-control" name="password" formControlName="password">
+        <div *ngIf="(passwordUpdateForm.controls['password'].errors && (passwordUpdateForm.controls['password'].dirty || passwordUpdateForm.controls['password'].touched))" class="red">
+            <div *ngIf="passwordUpdateForm.controls.password.errors.required">Password is required</div>
+            <div *ngIf="passwordUpdateForm.controls.password.errors.pattern">Password must contain a lower case , an upper case , special symbol and 
+              a number.
+            </div>
+          </div>
+          <button class="btn btn-primary" (click)="modifyPassword()" type="button">Modify Password</button>
+      </div>
+      <div *ngIf="errorMsg"  class = "red">{{errorMsg}}<br></div><br>
+    </form>
+  </div>
+  </div>
+  </div>
